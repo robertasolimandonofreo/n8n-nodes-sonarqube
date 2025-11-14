@@ -80,7 +80,7 @@ export class SonarQubeApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: '={{$credentials.serverUrl}}',
-			url: '/api/user/current',
+			url: '/api/users/current',
 			method: 'GET',
 		},
 	};
