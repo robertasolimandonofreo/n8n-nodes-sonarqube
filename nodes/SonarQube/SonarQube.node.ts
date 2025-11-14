@@ -62,7 +62,6 @@ export class SonarQube implements INodeType {
 					},
 				],
 				default: 'project',
-				description: 'The resource to operate on',
 			},
 
 			// PROJECT OPERATIONS
@@ -164,8 +163,8 @@ export class SonarQube implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						description: 'Get all quality gates',
-						action: 'Get all quality gates',
+						description: 'Get many quality gates',
+						action: 'Get many quality gates',
 					},
 					{
 						name: 'Get Project Status',
@@ -204,7 +203,6 @@ export class SonarQube implements INodeType {
 				},
 				typeOptions: {
 					minValue: 1,
-					maxValue: 500,
 				},
 				default: 50,
 				description: 'Max number of results to return',
@@ -263,7 +261,7 @@ export class SonarQube implements INodeType {
 				description: 'Component key (project key)',
 			},
 			{
-				displayName: 'Metric Keys',
+				displayName: 'Metric Key Names or IDs',
 				name: 'metricKeys',
 				type: 'multiOptions',
 				required: true,
@@ -277,10 +275,10 @@ export class SonarQube implements INodeType {
 					loadOptionsMethod: 'getMetrics',
 				},
 				default: [],
-				description: 'Comma-separated list of metric keys. Choose from the list or specify IDs.',
+				description: 'Comma-separated list of metric keys. Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Metric Keys',
+				displayName: 'Metric Key Names or IDs',
 				name: 'metricKeys',
 				type: 'multiOptions',
 				required: true,
@@ -294,7 +292,7 @@ export class SonarQube implements INodeType {
 					loadOptionsMethod: 'getMetrics',
 				},
 				default: [],
-				description: 'Comma-separated list of metric keys (max 15). Choose from the list or specify IDs.',
+				description: 'Comma-separated list of metric keys (max 15). Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Additional Fields',
@@ -391,7 +389,6 @@ export class SonarQube implements INodeType {
 				},
 				typeOptions: {
 					minValue: 1,
-					maxValue: 500,
 				},
 				default: 50,
 				description: 'Max number of results to return',
@@ -410,6 +407,13 @@ export class SonarQube implements INodeType {
 				},
 				options: [
 					{
+						displayName: 'Branch',
+						name: 'branch',
+						type: 'string',
+						default: '',
+						description: 'Branch name',
+					},
+					{
 						displayName: 'Component Keys',
 						name: 'componentKeys',
 						type: 'string',
@@ -418,29 +422,25 @@ export class SonarQube implements INodeType {
 						description: 'Comma-separated list of component keys',
 					},
 					{
-						displayName: 'Types',
-						name: 'types',
-						type: 'multiOptions',
-						options: [
-							{
-								name: 'Bug',
-								value: 'BUG',
-							},
-							{
-								name: 'Vulnerability',
-								value: 'VULNERABILITY',
-							},
-							{
-								name: 'Code Smell',
-								value: 'CODE_SMELL',
-							},
-							{
-								name: 'Security Hotspot',
-								value: 'SECURITY_HOTSPOT',
-							},
-						],
-						default: [],
-						description: 'Types of issues to search for',
+						displayName: 'Organization',
+						name: 'organization',
+						type: 'string',
+						default: '',
+						description: 'Organization key (SonarCloud only)',
+					},
+					{
+						displayName: 'Pull Request',
+						name: 'pullRequest',
+						type: 'string',
+						default: '',
+						description: 'Pull request ID',
+					},
+					{
+						displayName: 'Resolved',
+						name: 'resolved',
+						type: 'boolean',
+						default: false,
+						description: 'Whether to include resolved issues',
 					},
 					{
 						displayName: 'Severities',
@@ -456,16 +456,16 @@ export class SonarQube implements INodeType {
 								value: 'CRITICAL',
 							},
 							{
+								name: 'Info',
+								value: 'INFO',
+							},
+							{
 								name: 'Major',
 								value: 'MAJOR',
 							},
 							{
 								name: 'Minor',
 								value: 'MINOR',
-							},
-							{
-								name: 'Info',
-								value: 'INFO',
 							},
 						],
 						default: [],
@@ -477,12 +477,16 @@ export class SonarQube implements INodeType {
 						type: 'multiOptions',
 						options: [
 							{
-								name: 'Open',
-								value: 'OPEN',
+								name: 'Closed',
+								value: 'CLOSED',
 							},
 							{
 								name: 'Confirmed',
 								value: 'CONFIRMED',
+							},
+							{
+								name: 'Open',
+								value: 'OPEN',
 							},
 							{
 								name: 'Reopened',
@@ -492,41 +496,34 @@ export class SonarQube implements INodeType {
 								name: 'Resolved',
 								value: 'RESOLVED',
 							},
-							{
-								name: 'Closed',
-								value: 'CLOSED',
-							},
 						],
 						default: [],
 						description: 'Comma-separated list of statuses',
 					},
 					{
-						displayName: 'Resolved',
-						name: 'resolved',
-						type: 'boolean',
-						default: false,
-						description: 'Whether to include resolved issues',
-					},
-					{
-						displayName: 'Branch',
-						name: 'branch',
-						type: 'string',
-						default: '',
-						description: 'Branch name',
-					},
-					{
-						displayName: 'Pull Request',
-						name: 'pullRequest',
-						type: 'string',
-						default: '',
-						description: 'Pull request ID',
-					},
-					{
-						displayName: 'Organization',
-						name: 'organization',
-						type: 'string',
-						default: '',
-						description: 'Organization key (SonarCloud only)',
+						displayName: 'Types',
+						name: 'types',
+						type: 'multiOptions',
+						options: [
+							{
+								name: 'Bug',
+								value: 'BUG',
+							},
+							{
+								name: 'Code Smell',
+								value: 'CODE_SMELL',
+							},
+							{
+								name: 'Security Hotspot',
+								value: 'SECURITY_HOTSPOT',
+							},
+							{
+								name: 'Vulnerability',
+								value: 'VULNERABILITY',
+							},
+						],
+						default: [],
+						description: 'Types of issues to search for',
 					},
 				],
 			},
@@ -545,7 +542,6 @@ export class SonarQube implements INodeType {
 				},
 				default: '',
 				placeholder: 'my-project-key',
-				description: 'Project key',
 			},
 			{
 				displayName: 'Additional Fields',

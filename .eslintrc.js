@@ -7,15 +7,14 @@ module.exports = {
   plugins: ['@typescript-eslint', 'n8n-nodes-base'],
   extends: [
     'eslint:recommended',
-    'plugin:n8n-nodes-base/community',
+    'plugin:n8n-nodes-base/nodes',
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    'n8n-nodes-base/node-param-display-name-miscased': 'error',
-    'n8n-nodes-base/node-param-description-miscased': 'error',
-    'n8n-nodes-base/node-param-description-missing-final-period': 'error',
+    'no-undef': 'off',
+    'no-redeclare': 'off',
   },
   env: {
     node: true,
