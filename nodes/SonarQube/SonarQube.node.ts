@@ -275,7 +275,8 @@ export class SonarQube implements INodeType {
 					loadOptionsMethod: 'getMetrics',
 				},
 				default: [],
-				description: 'Comma-separated list of metric keys. Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description:
+					'Comma-separated list of metric keys. Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Metric Key Names or IDs',
@@ -292,7 +293,8 @@ export class SonarQube implements INodeType {
 					loadOptionsMethod: 'getMetrics',
 				},
 				default: [],
-				description: 'Comma-separated list of metric keys (max 15). Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+				description:
+					'Comma-separated list of metric keys (max 15). Choose from the list or specify IDs. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Additional Fields',
@@ -666,7 +668,7 @@ export class SonarQube implements INodeType {
 							returnData.push(...response.components);
 
 							while (hasMore) {
-								qs.p = (qs.p as number || 1) + 1;
+								qs.p = ((qs.p as number) || 1) + 1;
 								response = await this.helpers.httpRequestWithAuthentication.call(
 									this,
 									'sonarQubeApi',
@@ -785,7 +787,7 @@ export class SonarQube implements INodeType {
 							returnData.push(...response.issues);
 
 							while (hasMore) {
-								qs.p = (qs.p as number || 1) + 1;
+								qs.p = ((qs.p as number) || 1) + 1;
 								response = await this.helpers.httpRequestWithAuthentication.call(
 									this,
 									'sonarQubeApi',

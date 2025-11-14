@@ -1,4 +1,4 @@
-# n8n-nodes-sonarqube
+# @robertasoliman/n8n-nodes-sonarqube
 
 This is an n8n community node that lets you interact with SonarQube and SonarCloud in your n8n workflows.
 
@@ -31,7 +31,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 1. Go to **Settings > Community Nodes** in your n8n instance
 2. Select **Install**
-3. Enter `n8n-nodes-sonarqube` in the **Enter npm package name** field
+3. Enter `@robertasoliman/n8n-nodes-sonarqube` in the **Enter npm package name** field
 4. Agree to the [risks](https://docs.n8n.io/integrations/community-nodes/risks/) of using community nodes
 5. Select **Install**
 
@@ -40,7 +40,7 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 To install the node manually:
 
 ```bash
-npm install n8n-nodes-sonarqube
+npm install @robertasoliman/n8n-nodes-sonarqube
 ```
 
 For Docker installations, refer to the [npm package installation guide](https://docs.n8n.io/integrations/community-nodes/installation/gui-install/).
@@ -236,7 +236,7 @@ npm link
 5. In your n8n installation directory, link the package:
 ```bash
 cd ~/.n8n/nodes  # or your n8n custom nodes directory
-npm link n8n-nodes-sonarqube
+npm link @robertasoliman/n8n-nodes-sonarqube
 ```
 
 6. Start n8n:

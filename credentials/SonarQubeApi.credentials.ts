@@ -62,7 +62,8 @@ export class SonarQubeApi implements ICredentialType {
 			},
 			default: '',
 			placeholder: 'squ_1234567890abcdef',
-			description: 'Personal Access Token for authentication. Generate one in your SonarQube/SonarCloud account settings under Security.',
+			description:
+				'Personal Access Token for authentication. Generate one in your SonarQube/SonarCloud account settings under Security.',
 			required: true,
 		},
 	];
@@ -79,7 +80,7 @@ export class SonarQubeApi implements ICredentialType {
 	test: ICredentialTestRequest = {
 		request: {
 			baseURL: '={{$credentials.serverUrl}}',
-			url: '/api/authentication/validate',
+			url: '/api/user/current',
 			method: 'GET',
 		},
 	};
