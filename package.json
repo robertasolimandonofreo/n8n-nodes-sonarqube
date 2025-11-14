@@ -1,6 +1,6 @@
 {
   "name": "@robertasoliman/n8n-nodes-sonarqube",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "n8n node for consuming SonarQube and SonarCloud Web API",
   "keywords": [
     "n8n-community-node-package",
