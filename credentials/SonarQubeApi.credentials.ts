@@ -40,6 +40,20 @@ export class SonarQubeApi implements ICredentialType {
 			description: 'The URL of your SonarCloud instance',
 		},
 		{
+			displayName: 'Organization',
+			name: 'organization',
+			type: 'string',
+			default: '',
+			placeholder: 'my-organization',
+			displayOptions: {
+				show: {
+					environment: ['sonarCloud'],
+				},
+			},
+			description: 'Your SonarCloud organization key (required for SonarCloud)',
+			required: true,
+		},
+		{
 			displayName: 'Server URL',
 			name: 'serverUrl',
 			type: 'string',

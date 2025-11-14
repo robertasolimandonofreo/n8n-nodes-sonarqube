@@ -603,15 +603,27 @@ export class SonarQube implements INodeType {
 		loadOptions: {
 			async getMetrics(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				const returnData: INodePropertyOptions[] = [];
+				const credentials = await this.getCredentials('sonarQubeApi');
+				const baseURL = credentials.serverUrl as string;
+				const organization = credentials.organization as string | undefined;
+
+				const qs: IDataObject = {
+					ps: 500,
+				};
+
+				// Add organization from credentials if available (SonarCloud)
+				if (organization) {
+					qs.organization = organization;
+				}
+
 				const metrics = await this.helpers.httpRequestWithAuthentication.call(
 					this,
 					'sonarQubeApi',
 					{
 						method: 'GET',
+						baseURL,
 						url: '/api/metrics/search',
-						qs: {
-							ps: 500,
-						},
+						qs,
 					},
 				);
 
@@ -636,6 +648,10 @@ export class SonarQube implements INodeType {
 		const resource = this.getNodeParameter('resource', 0);
 		const operation = this.getNodeParameter('operation', 0);
 
+		const credentials = await this.getCredentials('sonarQubeApi');
+		const baseURL = credentials.serverUrl as string;
+		const organization = credentials.organization as string | undefined;
+
 		for (let i = 0; i < items.length; i++) {
 			try {
 				if (resource === 'project') {
@@ -648,6 +664,11 @@ export class SonarQube implements INodeType {
 							...additionalFields,
 						};
 
+						// Add organization from credentials if available (SonarCloud)
+						if (organization && !qs.organization) {
+							qs.organization = organization;
+						}
+
 						if (!returnAll) {
 							const limit = this.getNodeParameter('limit', i);
 							qs.ps = limit;
@@ -658,6 +679,7 @@ export class SonarQube implements INodeType {
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/projects/search',
 								qs,
 							},
@@ -674,6 +696,7 @@ export class SonarQube implements INodeType {
 									'sonarQubeApi',
 									{
 										method: 'GET',
+										baseURL,
 										url: '/api/projects/search',
 										qs,
 									},
@@ -703,6 +726,7 @@ export class SonarQube implements INodeType {
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/measures/component',
 								qs,
 							},
@@ -726,6 +750,7 @@ export class SonarQube implements INodeType {
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/measures/search_history',
 								qs,
 							},
@@ -767,6 +792,11 @@ export class SonarQube implements INodeType {
 							qs.organization = filters.organization;
 						}
 
+						// Add organization from credentials if available (SonarCloud) and not already set
+						if (organization && !qs.organization) {
+							qs.organization = organization;
+						}
+
 						if (!returnAll) {
 							const limit = this.getNodeParameter('limit', i);
 							qs.ps = limit;
@@ -777,6 +807,7 @@ export class SonarQube implements INodeType {
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/issues/search',
 								qs,
 							},
@@ -793,6 +824,7 @@ export class SonarQube implements INodeType {
 									'sonarQubeApi',
 									{
 										method: 'GET',
+										baseURL,
 										url: '/api/issues/search',
 										qs,
 									},
@@ -815,11 +847,17 @@ export class SonarQube implements INodeType {
 							qs.organization = additionalFields.organization;
 						}
 
+						// Add organization from credentials if available (SonarCloud) and not already set
+						if (organization && !qs.organization) {
+							qs.organization = organization;
+						}
+
 						const response = await this.helpers.httpRequestWithAuthentication.call(
 							this,
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/qualitygates/list',
 								qs,
 							},
@@ -842,6 +880,7 @@ export class SonarQube implements INodeType {
 							'sonarQubeApi',
 							{
 								method: 'GET',
+								baseURL,
 								url: '/api/qualitygates/project_status',
 								qs,
 							},
